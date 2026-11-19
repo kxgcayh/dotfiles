@@ -1,5 +1,6 @@
 [tools]
 bun = "latest"
+node = "lts"
 ghq = "latest"
 pnpm = "latest"
 pre-commit = "latest"
