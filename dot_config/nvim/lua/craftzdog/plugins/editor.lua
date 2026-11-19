@@ -41,6 +41,8 @@ require("blink.cmp").setup({
 			preset = "cmdline",
 			["<Right>"] = false,
 			["<Left>"] = false,
+			["<Up>"] = { "select_prev", "fallback" },
+			["<Down>"] = { "select_next", "fallback" },
 		},
 		completion = {
 			list = { selection = { preselect = false } },

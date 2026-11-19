@@ -68,3 +68,11 @@ end, { desc = "Open package.json in floating window" })
 keymap.set("n", "<leader>bd", function()
 	require("craftzdog.utils.editor").delete_hidden_buffers()
 end, { desc = "Delete hidden buffers" })
+
+-- Option+arrow moves by word in insert mode, like VS Code
+keymap.set("i", "<M-Left>", "<S-Left>", { desc = "Word left" })
+keymap.set("i", "<M-Right>", "<S-Right>", { desc = "Word right" })
+keymap.set("i", "<M-BS>", "<C-w>", { desc = "Delete word left" })
+-- Some terminals send Option+arrow as Alt+b / Alt+f (readline style)
+keymap.set("i", "<M-b>", "<S-Left>", { desc = "Word left" })
+keymap.set("i", "<M-f>", "<S-Right>", { desc = "Word right" })
