@@ -113,7 +113,8 @@ map({
 map({
 	{ "<leader>cl", Snacks.picker.lsp_config, desc = "Lsp Info" },
 	{ "<leader>cR", Snacks.rename.rename_file, desc = "Rename File" },
-	{ ";f", Snacks.picker.files, desc = "Find files" },
+	{ ";f", Snacks.picker.smart, desc = "Smart find files" },
+	{ ";F", Snacks.picker.files, desc = "Find files (all)" },
 	{ ";r", Snacks.picker.grep, desc = "Live grep" },
 	{ ";;", Snacks.picker.resume, desc = "Resume picker" },
 	{

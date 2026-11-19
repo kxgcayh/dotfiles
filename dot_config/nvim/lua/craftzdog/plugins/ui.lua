@@ -22,6 +22,7 @@ require("snacks").setup({
 	scroll = { enabled = false },
 	picker = {
 		enabled = true,
+		matcher = { frecency = true },
 		sources = {
 			files = { hidden = true },
 			grep = { hidden = true },
