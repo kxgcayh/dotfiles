@@ -1,14 +1,35 @@
 ![nvim screenshot](./images/screenshot-neovim.png)
 
-# Takuya's dotfiles
+# Kautsar's dotfiles
 
-**Warning**: Don’t blindly use my settings unless you know what that entails. Use at your own risk!
+Forked from [craftzdog/dotfiles](https://github.com/craftzdog/dotfiles) by Takuya Matsuyama, with my own tweaks on top.
 
-### Looking for an AI-native tech notes app?
+**Warning**: Don’t blindly use these settings unless you know what that entails. Use at your own risk!
 
-Check out my app called [Inkdrop](https://www.inkdrop.app/)
+## Changes from upstream
 
-[![Inkdrop](./images/screenshot-inkdrop.jpg)](https://www.inkdrop.app/)
+- **Vesper theme everywhere**: Ghostty (`Vesper`, background blur kept), Neovim ([vesper.nvim](https://github.com/datsfilipe/vesper.nvim), transparent), and herdr (`vesper`). The custom Neovim tabline uses the Vesper palette instead of Solarized Osaka.
+- **oh-my-zsh style shortcuts in fish**:
+  - [plugin-git](https://github.com/jhillyerd/plugin-git) for the oh-my-zsh git aliases (`gst`, `gco`, `gcm`, …)
+  - `conf.d/abbr.fish`: abbreviations ported from the oh-my-zsh flutter, npm, opencode and vscode plugins (`flr`, `flget`, `npmrd`, `opc`, `vsc`, …)
+- **Node via mise**: `node = "lts"` in the mise config.
+- **Machine-specific settings** (paths, SDKs, API keys) live in `~/.config/fish/config-local.fish`, which chezmoi ignores, so they never enter this repo.
+
+## Install
+
+```sh
+brew install chezmoi
+chezmoi init --apply kxgcayh
+```
+
+`chezmoi init` asks for your name, email and GitHub username to fill in the git config. Applying also installs the `Brewfile`, global npm packages and fisher plugins.
+
+To pull in upstream changes:
+
+```sh
+git remote add upstream https://github.com/craftzdog/dotfiles.git  # once
+git fetch upstream && git merge upstream/master
+```
 
 ## Contents
 
@@ -35,7 +56,7 @@ Managed with [chezmoi](https://www.chezmoi.io/).
   - **live grep**: [ripgrep](https://github.com/BurntSushi/ripgrep)
   - **find files**: [fd](https://github.com/sharkdp/fd)
 - a terminal that supports true color and _undercurl_, such as [Ghostty](https://ghostty.org/)
-- [Solarized Osaka](https://github.com/craftzdog/solarized-osaka.nvim)
+- [vesper.nvim](https://github.com/datsfilipe/vesper.nvim)
 
 ## Terminal setup
 
@@ -59,6 +80,7 @@ Installed as Homebrew casks from the `Brewfile`:
 - [Eza](https://github.com/eza-community/eza) - `ls` replacement
 - [ghq](https://github.com/x-motemen/ghq) - Local Git repository organizer
 - [fzf](https://github.com/PatrickF1/fzf.fish) - Interactive filtering
+- [plugin-git](https://github.com/jhillyerd/plugin-git) - oh-my-zsh style git aliases
 
 ## PowerShell setup (Windows)
 
@@ -72,7 +94,7 @@ Installed as Homebrew casks from the `Brewfile`:
 
 ## How to use
 
-Watch my video tutorials:
+Takuya's video tutorials explain the original setup:
 
 1. [My Neovim setup](https://www.youtube.com/watch?v=fFHlfbKVi30)
    - [Article version](https://www.devas.life/effective-neovim-setup-for-web-development-towards-2024/)
@@ -82,8 +104,10 @@ Watch my video tutorials:
 1. [My Fish shell workflow for coding](https://www.youtube.com/watch?v=KKxhf50FIPI)
 1. [How to set up PowerShell prompt with Oh My Posh on Windows 11](https://www.youtube.com/watch?v=5-aK2_WwrmM)
 
-## About me
+## Credits
+
+Original dotfiles by Takuya Matsuyama ([craftzdog](https://github.com/craftzdog)):
 
 - [@inkdrop_app on X](https://twitter.com/inkdrop_app)
 - [Newsletters](https://www.devas.life/)
-- [My product: Inkdrop - Markdown note-taking app](https://www.inkdrop.app/)
+- [Inkdrop - Markdown note-taking app](https://www.inkdrop.app/)
