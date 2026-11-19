@@ -2,11 +2,12 @@ local icons = Craftzdog.icons
 local lualine_utils = require("craftzdog.utils.lualine")
 local lazygit_utils = require("craftzdog.utils.lazygit")
 
-require("solarized-osaka").setup({
-	style = "vivid",
+-- Vesper: neutral near-black theme, matches Ghostty's "Vesper" theme.
+-- transparent = true lets Ghostty's background blur show through.
+require("vesper").setup({
 	transparent = true,
 })
-vim.cmd.colorscheme("solarized-osaka")
+vim.cmd.colorscheme("vesper")
 
 require("mini.icons").setup()
 require("mini.icons").mock_nvim_web_devicons()

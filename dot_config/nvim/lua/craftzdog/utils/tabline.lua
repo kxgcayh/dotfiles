@@ -8,35 +8,36 @@ local TRUNCATE_TO = 17
 
 ---Setup highlight groups for the tabline
 function M.setup()
-	local ok, colors_mod = pcall(require, "solarized-osaka.colors")
-	if not ok then
-		vim.notify("tabline: solarized-osaka.colors not found", vim.log.levels.WARN)
-		return
-	end
-	local colors = colors_mod.setup()
+	-- Vesper palette (matches the "vesper" colorscheme and Ghostty theme)
+	local colors = {
+		accent = "#FFC799", -- Vesper orange
+		dark = "#101010",
+		inactive_bg = "#232323",
+		inactive_fg = "#A0A0A0",
+	}
 
-	-- Active tab: yellow background, white text
+	-- Active tab: accent background, dark text
 	vim.api.nvim_set_hl(0, "TabLineActive", {
-		fg = colors.base4,
-		bg = colors.yellow,
+		fg = colors.dark,
+		bg = colors.accent,
 		bold = true,
 	})
 
-	-- Inactive tab: base02 background, base0 text
+	-- Inactive tab: dark gray background, muted text
 	vim.api.nvim_set_hl(0, "TabLineInactive", {
-		fg = colors.base0,
-		bg = colors.base02,
+		fg = colors.inactive_fg,
+		bg = colors.inactive_bg,
 	})
 
-	-- Separator for active tab (yellow foreground, transparent background)
+	-- Separator for active tab (accent foreground, transparent background)
 	vim.api.nvim_set_hl(0, "TabLineSepActive", {
-		fg = colors.yellow,
+		fg = colors.accent,
 		bg = "NONE",
 	})
 
-	-- Separator for inactive tab (base02 foreground, transparent background)
+	-- Separator for inactive tab (dark gray foreground, transparent background)
 	vim.api.nvim_set_hl(0, "TabLineSepInactive", {
-		fg = colors.base02,
+		fg = colors.inactive_bg,
 		bg = "NONE",
 	})
 
