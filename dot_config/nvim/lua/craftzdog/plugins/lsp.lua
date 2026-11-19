@@ -43,3 +43,18 @@ vim.lsp.enable({
 	"glsl_analyzer",
 	"rust_analyzer",
 })
+
+-- Flutter: sets up dartls itself, so don't add it to vim.lsp.enable
+require("flutter-tools").setup({
+	widget_guides = { enabled = true },
+	closing_tags = { enabled = true, prefix = "// " },
+	dev_log = { enabled = true, open_cmd = "botright 15split" },
+	lsp = {
+		capabilities = require("blink.cmp").get_lsp_capabilities(capabilities),
+		settings = {
+			completeFunctionCalls = true,
+			renameFilesWithClasses = "prompt",
+			updateImportsOnRename = true,
+		},
+	},
+})

@@ -27,6 +27,9 @@ vim.pack.add({
 	{ src = gh("neovim/nvim-lspconfig") },
 	{ src = gh("mason-org/mason.nvim") },
 	{ src = gh("WhoIsSethDaniel/mason-tool-installer.nvim") },
+	-- Flutter
+	{ src = gh("nvim-lua/plenary.nvim") },
+	{ src = gh("nvim-flutter/flutter-tools.nvim") },
 	-- Util
 	{ src = gh("stevearc/oil.nvim") },
 	{ src = gh("zbirenbaum/copilot.lua") },

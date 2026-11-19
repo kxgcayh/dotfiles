@@ -271,3 +271,17 @@ map({
 	{ "<leader>dh", "<cmd>CodeDiff history %<cr>", desc = "File history (current file)" },
 	{ "<leader>dH", "<cmd>CodeDiff history<cr>", desc = "File history (repo)" },
 })
+
+-- Flutter
+map({
+	{ "<leader>Fr", "<cmd>FlutterRun<cr>", desc = "Flutter run" },
+	{ "<leader>Fd", "<cmd>FlutterDevices<cr>", desc = "Flutter pick device" },
+	{ "<leader>Fe", "<cmd>FlutterEmulators<cr>", desc = "Flutter emulators" },
+	{ "<leader>Fl", "<cmd>FlutterReload<cr>", desc = "Flutter hot reload" },
+	{ "<leader>FR", "<cmd>FlutterRestart<cr>", desc = "Flutter hot restart" },
+	{ "<leader>Fq", "<cmd>FlutterQuit<cr>", desc = "Flutter quit" },
+	{ "<leader>Fo", "<cmd>FlutterOutlineToggle<cr>", desc = "Flutter widget outline" },
+	{ "<leader>Fg", "<cmd>FlutterLogToggle<cr>", desc = "Flutter toggle log" },
+	{ "<leader>Fc", "<cmd>FlutterLogClear<cr>", desc = "Flutter clear log" },
+	{ "<leader>Ft", "<cmd>FlutterDevTools<cr>", desc = "Flutter DevTools" },
+})
