@@ -46,6 +46,7 @@ vim.lsp.enable({
 
 -- Flutter: sets up dartls itself, so don't add it to vim.lsp.enable
 require("flutter-tools").setup({
+	fvm = true,
 	widget_guides = { enabled = true },
 	closing_tags = { enabled = true, prefix = "// " },
 	dev_log = { enabled = true, open_cmd = "botright 15split" },

@@ -35,6 +35,10 @@ brew "apm"
 # React Native
 brew "watchman"
 
+# Flutter
+brew "fvm"
+brew "cocoapods"
+
 cask "1password"
 cask "1password-cli"
 cask "ghostty"

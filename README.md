@@ -16,6 +16,7 @@ Forked from [craftzdog/dotfiles](https://github.com/craftzdog/dotfiles) by Takuy
   - `;f` uses the snacks `smart` picker with frecency (buffers, recent and project files, like VS Code's Cmd+P); `;F` is the plain file finder
   - Up/Down select items in the cmdline completion menu; Option+Left/Right move by word in insert mode
   - [flutter-tools.nvim](https://github.com/nvim-flutter/flutter-tools.nvim) with keymaps under `<leader>F` (`Fd` device, `Fr` run, `Fl` reload, `FR` restart, `Fq` quit, `Fg` log, `Fo` outline, `Ft` DevTools)
+- **Flutter via [fvm](https://fvm.app)**: `fvm` and `cocoapods` in the Brewfile; fish wraps `flutter` and `dart` to run through `fvm`, and flutter-tools.nvim uses the project's `.fvm/flutter_sdk`.
 - **Node via mise**: `node = "lts"` in the mise config.
 - **Machine-specific settings** (paths, SDKs, API keys) live in `~/.config/fish/config-local.fish`, which chezmoi ignores, so they never enter this repo.
 
@@ -61,7 +62,7 @@ Managed with [chezmoi](https://www.chezmoi.io/).
   - **find files**: [fd](https://github.com/sharkdp/fd)
 - a terminal that supports true color and _undercurl_, such as [Ghostty](https://ghostty.org/)
 - [vesper.nvim](https://github.com/datsfilipe/vesper.nvim)
-- [Flutter SDK](https://docs.flutter.dev/get-started/install) for flutter-tools.nvim **_(optional)_**
+- Flutter SDK (installed with `fvm`) for flutter-tools.nvim **_(optional)_**
 
 ## Terminal setup
 
