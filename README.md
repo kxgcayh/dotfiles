@@ -74,7 +74,7 @@ Managed with [chezmoi](https://www.chezmoi.io/).
 
 Installed as Homebrew casks from the `Brewfile`:
 
-- [PlemolJP](https://github.com/yuru7/PlemolJP) (`PlemolJP Console NF`) - A mix of IBM Plex Mono and IBM Plex Sans JP
+- [Meslo Nerd Font for Powerlevel10k](https://github.com/romkatv/powerlevel10k-media) (`MesloLGS NF`) - Ghostty's font
 - [BlexMono Nerd Font](https://github.com/ryanoasis/nerd-fonts)
 
 ## Shell setup (macOS & Linux)

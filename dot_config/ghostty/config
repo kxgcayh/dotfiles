@@ -5,7 +5,7 @@ desktop-notifications = true
 background-opacity = 0.8
 background-blur-radius = 20
 
-font-family = "PlemolJP Console NF"
+font-family = "MesloLGS NF"
 
 cursor-style = block
 cursor-style-blink = true

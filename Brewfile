@@ -61,7 +61,7 @@ cask "zed"
 cask "android-studio"
 
 # Fonts
-cask "font-plemol-jp-nf"
+cask "font-meslo-for-powerlevel10k"
 cask "font-blex-mono-nerd-font"
 cask "font-hack-nerd-font"
 
