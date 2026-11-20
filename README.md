@@ -29,6 +29,11 @@ chezmoi init --apply kxgcayh
 
 `chezmoi init` asks for your name, email and GitHub username to fill in the git config. Applying also installs the `Brewfile`, global npm packages and fisher plugins.
 
+On macOS, setup also sets Fish as your default login shell. It may ask for your
+Mac login password to register Fish in `/etc/shells` and change the shell. This
+step runs once per machine and skips the change if Fish is already the default.
+Log out and back in afterward, or run `exec fish` in your current terminal.
+
 To pull in upstream changes:
 
 ```sh
