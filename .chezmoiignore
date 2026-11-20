@@ -57,12 +57,18 @@ Session.vim
 .config/powershell
 {{- end }}
 
-# Karabiner-Elements (macOS only)
+# Karabiner-Elements and launchd agents (macOS only)
 {{- if ne .chezmoi.os "darwin" }}
 .config/karabiner
+Library
 {{- end }}
 
 # npm install script (Unix only)
 {{- if eq .chezmoi.os "windows" }}
 install-npm-packages.sh
 {{- end }}
+
+# Repository tooling and machine-local configuration
+scripts/
+.zshrc.local
+.config/devault/config.json

@@ -117,3 +117,47 @@ Original dotfiles by Takuya Matsuyama ([craftzdog](https://github.com/craftzdog)
 - [@inkdrop_app on X](https://twitter.com/inkdrop_app)
 - [Newsletters](https://www.devas.life/)
 - [Inkdrop - Markdown note-taking app](https://www.inkdrop.app/)
+
+## Zsh restore and local settings
+
+The Zsh backup includes Powerlevel10k settings. Install Oh My Zsh and the
+Powerlevel10k theme separately, plus the plugins listed in `.zshrc`:
+`zsh-autosuggestions`, `zsh-syntax-highlighting`, and `zsh-interactive-cd`.
+Built-in plugins come with Oh My Zsh. NVM, jenv, Android SDK, and FVM need their
+usual setup before their shell integration is useful.
+
+Before restoring `.zshrc`, move credentials, custom volume paths, compiler
+flags, Windows cross-compilation variables, AI command wrappers, and other
+machine overrides from your current shell file into unmanaged `~/.zshrc.local`.
+The managed shell sources this file first, before the instant prompt and plugin
+initialization. Keep local secrets out of Git. `PUB_CACHE` and `EXT_DRIVE` belong
+there if used; portable home paths use `$HOME` in the backup. Review `chezmoi diff`
+before applying, and keep a private copy of your old shell settings.
+
+The Brewfile preserves existing entries and adds installed tools and fonts.
+Explicit additions exclude mingw-w64, xwin, qt, llvm, omp, xmake, deskflow,
+dotnet-sdk, and mac-sai. Homebrew can still install excluded tools as dependencies.
+
+## Devault sync (macOS)
+
+`~/.local/bin/devault-sync` exports ai-memory session notes and rebuilds vault
+indexes. The LaunchAgent runs every five minutes and at login. The installation
+hook reloads the agent when its script or plist changes. Restoring these files
+with chezmoi will activate that agent; inspect the proposed changes first.
+Python 3 and an existing Obsidian vault are required. No vault content is backed
+up here.
+
+Keep the vault location in unmanaged `~/.config/devault/config.json` using the
+`vault` field; optionally set `ai_memory` there for a custom ai-memory data root.
+Alternatively the script recognizes `DEVAULT_VAULT` and `AI_MEMORY_DATA_DIR`, or
+finds a vault named Devault in Obsidian's local settings. launchd does not inherit
+interactive shell settings, so prefer the JSON configuration for the agent.
+Use `devault-sync --where` to inspect the chosen vault and `--dry-run` to preview
+writes. Logs and state live in `~/.local/state/devault-sync/`.
+
+## Backup checks
+
+Install `pre-commit` and Gitleaks separately, then run `pre-commit install` in
+this repository. The configured hook scans for secrets and literal personal
+home or volume paths in changed configuration. CI runs the same path check and
+Gitleaks. Local overrides and AI configuration should stay outside the backup.

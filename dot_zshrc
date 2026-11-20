@@ -1,0 +1,50 @@
+# Local credentials and machine paths must be available before initialization.
+[[ ! -r "$HOME/.zshrc.local" ]] || source "$HOME/.zshrc.local"
+
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+export ZSH="${ZSH:-$HOME/.oh-my-zsh}"
+ZSH_THEME="powerlevel10k/powerlevel10k"
+plugins=(
+  git
+  npm
+  node
+  rust
+  sudo
+  vscode
+  flutter
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  zsh-interactive-cd
+)
+[[ ! -r "$ZSH/oh-my-zsh.sh" ]] || source "$ZSH/oh-my-zsh.sh"
+alias python="python3"
+alias pip="pip3"
+alias lsd="eza -a --icons=always --group-directories-first"
+alias lld="eza -la --icons=always --group-directories-first"
+alias vim="nvim"
+alias podcl="rm -rf Pods && pod deintegrate && pod repo update && pod install"
+alias flcand="flc && flget && flutter pub run build_runner build --delete-conflicting-outputs"
+alias flca="flc && flget && flutter pub run build_runner build --delete-conflicting-outputs && cd ios && pod install && cd .."
+alias flclean="flc && flget && flutter pub run build_runner build --delete-conflicting-outputs && cd ios && podcl && cd .."
+alias flbapkr="flutter build apk --release"
+export PATH="$HOME/.local/bin:$PATH"
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export PATH=/opt/homebrew/bin:$PATH
+export PATH="$HOME/.jenv/bin:$PATH"
+if (( $+commands[jenv] )); then eval "$(jenv init -)"; fi
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+export PATH="$HOME/.cargo/bin:$PATH"
+export FVM_CACHE_PATH="${FVM_CACHE_PATH:-$HOME/.fvm}"
+export PATH="$FVM_CACHE_PATH/default/bin:$PATH"
+export ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
+export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$PATH"
+export PNPM_HOME="${PNPM_HOME:-$HOME/Library/pnpm}"
+case ":$PATH:" in
+  ":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+[[ -z ${PUB_CACHE:-} ]] || export PATH="$PUB_CACHE/bin:$PATH"

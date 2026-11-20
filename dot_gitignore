@@ -46,3 +46,4 @@ Pods/
 
 # Agents
 settings.local.json
+**/.claude/settings.local.json
