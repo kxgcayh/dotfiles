@@ -236,7 +236,7 @@ def skip_project(meta):
         return True
     if rp and (rp.startswith(SKIP_PREFIXES) or Path(rp) == HOME):
         return True
-    if rp and ("ObsidianVault" in rp or rp.startswith(str(HOME / "Obsidian"))):
+    if rp and ("ObsidianVault" in rp or "iCloud~md~obsidian" in rp or rp.startswith(str(HOME / "Obsidian"))):
         return True
     return False
 
