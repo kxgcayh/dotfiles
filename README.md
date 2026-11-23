@@ -140,8 +140,6 @@ there if used; portable home paths use `$HOME` in the backup. Review `chezmoi di
 before applying, and keep a private copy of your old shell settings.
 
 The Brewfile preserves existing entries and adds installed tools and fonts.
-Explicit additions exclude mingw-w64, xwin, qt, llvm, omp, xmake, deskflow,
-dotnet-sdk, and mac-sai. Homebrew can still install excluded tools as dependencies.
 
 ## Devault sync (macOS)
 

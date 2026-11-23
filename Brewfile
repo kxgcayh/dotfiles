@@ -41,21 +41,9 @@ brew "watchman"
 brew "fvm"
 brew "cocoapods"
 
-cask "1password"
-cask "1password-cli"
 cask "ghostty"
-cask "karabiner-elements"
-cask "keyboard-maestro"
-cask "raycast"
-cask "transmit"
 cask "claude-code@latest"
 cask "chatgpt"
-cask "cleanshot"
-cask "raindropio"
-
-# Browsers
-cask "google-chrome"
-cask "zen"
 
 # Editors
 cask "sublime-text"
@@ -69,7 +57,6 @@ cask "font-hack-nerd-font"
 
 # Other tools
 cask "imageoptim"
-cask "numi"
 
 # Additional development tools
 brew "python@3.15"
