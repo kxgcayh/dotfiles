@@ -9,6 +9,8 @@ set -g fish_prompt_pwd_dir_length 1
 set -g theme_display_user yes
 set -g theme_hide_hostname no
 set -g theme_hostname always
+# Default brblack autosuggestions are hard to see on dark themes like Vesper
+set -g fish_color_autosuggestion 777777
 
 # aliases
 alias ls "ls -p -G"
