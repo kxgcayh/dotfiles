@@ -35,6 +35,9 @@ export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 export PATH=/opt/homebrew/bin:$PATH
+# brew: delete old versions and downloads on every install/upgrade (default keeps them 30-120 days)
+export HOMEBREW_CLEANUP_MAX_AGE_DAYS=1
+export HOMEBREW_CLEANUP_PERIODIC_FULL_DAYS=1
 export PATH="$HOME/.jenv/bin:$PATH"
 if (( $+commands[jenv] )); then eval "$(jenv init -)"; fi
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

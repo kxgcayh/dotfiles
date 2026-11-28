@@ -24,4 +24,6 @@ brew bundle --verbose --file="{{ $brewfile }}"
 {{- if $windowsCrossBuild }}
 brew bundle --verbose --file="{{ joinPath .chezmoi.sourceDir "Brewfile.windows-cross" }}"
 {{- end }}
+# Keep no old versions or cached downloads after upgrading.
+brew cleanup --prune=all
 {{- end -}}

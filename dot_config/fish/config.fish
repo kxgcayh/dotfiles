@@ -23,6 +23,9 @@ alias cz chezmoi
 command -qv nvim && alias vim nvim
 
 set -gx EDITOR nvim
+# brew: delete old versions and downloads on every install/upgrade (default keeps them 30-120 days)
+set -gx HOMEBREW_CLEANUP_MAX_AGE_DAYS 1
+set -gx HOMEBREW_CLEANUP_PERIODIC_FULL_DAYS 1
 
 set -gx PATH bin $PATH
 set -gx PATH ~/bin $PATH
