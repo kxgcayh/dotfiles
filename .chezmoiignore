@@ -45,6 +45,7 @@ images/
 .config/nvim/nvim-pack-lock.json
 
 Brewfile
+Brewfile.windows-cross
 Brewfile.lock.json
 winget.json
 scoop.json

@@ -1,0 +1,4 @@
+# Windows cross-compile toolchain (optional; asked during `chezmoi init`)
+brew "mingw-w64"
+brew "xmake"
+brew "xwin"

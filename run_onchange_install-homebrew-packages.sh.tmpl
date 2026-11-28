@@ -1,7 +1,9 @@
 {{- if eq .chezmoi.os "darwin" -}}
 {{- $brewfile := joinPath .chezmoi.sourceDir "Brewfile" -}}
+{{- $windowsCrossBuild := index . "windowsCrossBuild" | default false -}}
 #!/bin/sh
 # Brewfile hash: {{ include "Brewfile" | sha256sum }}
+# Windows cross-build: {{ $windowsCrossBuild }} {{ include "Brewfile.windows-cross" | sha256sum }}
 
 set -e
 
@@ -19,4 +21,7 @@ done
 brew trust --tap d-kuro/tap heroku/brew
 
 brew bundle --file="{{ $brewfile }}"
+{{- if $windowsCrossBuild }}
+brew bundle --file="{{ joinPath .chezmoi.sourceDir "Brewfile.windows-cross" }}"
+{{- end }}
 {{- end -}}

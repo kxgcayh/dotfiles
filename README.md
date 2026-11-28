@@ -29,6 +29,8 @@ chezmoi init --apply kxgcayh
 
 `chezmoi init` asks for your name, email and GitHub username to fill in the git config. Applying also installs the `Brewfile`, global npm packages and fisher plugins.
 
+On macOS it also asks whether to install the Windows cross-compile tools (`mingw-w64`, `xmake`, `xwin` from `Brewfile.windows-cross`). The answer is saved; run `chezmoi init --prompt` to change it.
+
 On macOS, setup also sets Fish as your default login shell. It may ask for your
 Mac login password to register Fish in `/etc/shells` and change the shell. This
 step runs once per machine and skips the change if Fish is already the default.

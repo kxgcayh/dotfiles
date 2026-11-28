@@ -1,8 +1,13 @@
 {{- $email := promptStringOnce . "email" "Email address" -}}
 {{- $name := promptStringOnce . "name" "Full name" -}}
 {{- $githubUser := promptStringOnce . "githubUser" "GitHub username" -}}
+{{- $windowsCrossBuild := false -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $windowsCrossBuild = promptBoolOnce . "windowsCrossBuild" "Install Windows cross-compile tools (mingw-w64, xmake, xwin)" false -}}
+{{- end -}}
 
 [data]
     email = {{ $email | quote }}
     name = {{ $name | quote }}
     githubUser = {{ $githubUser | quote }}
+    windowsCrossBuild = {{ $windowsCrossBuild }}
