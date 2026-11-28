@@ -1,0 +1,133 @@
+#!/usr/bin/env bash
+# herdr-codex: run Codex in a visible Herdr pane beside the caller (port of codex-plugin-cc).
+#   herdr-codex review      [--base REF] [--dir DIR]                 read-only bug review
+#   herdr-codex adversarial [--base REF] [--dir DIR] [focus text...] read-only design challenge
+#   herdr-codex rescue      [--dir DIR] <task text...>               write-capable takeover
+# Reuses an idle/done Codex already in this tab with the same cwd (rescue: only an earlier rescue pane);
+# --new forces a fresh pane (a reused pane keeps its sandbox, so --new is the only read-only guarantee).
+# A new Codex starts with --dangerously-bypass-hook-trust (enabled hooks run without the approval screen);
+# --no-trust-hooks restores the approval screen, and the wrapper then exits 3 instead of typing into it.
+# Prints the result file path and its contents. The Codex pane stays open: steer it with
+# `herdr agent prompt <name> ...`, close it yourself when done.
+set -euo pipefail
+
+usage() { sed -n '2,11p' "$0" | sed 's/^# \{0,1\}//'; exit 2; }
+case ${1:-} in ""|-h|--help) usage ;; esac
+[ "${HERDR_ENV:-}" = 1 ] || { echo "herdr-codex: not inside a Herdr pane (HERDR_ENV!=1)" >&2; exit 1; }
+
+mode=$1; shift
+base=""; dir="$PWD"; timeout=1800000; fresh=0; trusthooks=1
+while [ $# -gt 0 ]; do
+  case $1 in
+    --base) base=$2; shift 2 ;;
+    --dir) dir=$2; shift 2 ;;
+    --timeout) timeout=$2; shift 2 ;;
+    --new) fresh=1; shift ;;
+    --trust-hooks) trusthooks=1; shift ;;
+    --no-trust-hooks) trusthooks=0; shift ;;
+    -h|--help) usage ;;
+    *) break ;;
+  esac
+done
+extra="$*"
+
+prompts="$HOME/.config/herdr/prompts"
+case $mode in
+  review)      pfile=codex-review.md;      args=(--no-daemon -s read-only -a never) ;;
+  adversarial) pfile=codex-adversarial.md; args=(--no-daemon -s read-only -a never) ;;
+  rescue)      pfile=codex-rescue.md;      args=(--no-daemon --dangerously-bypass-approvals-and-sandbox)
+               [ -n "$extra" ] || { echo "herdr-codex rescue: task text required" >&2; exit 2; } ;;
+  *) usage ;;
+esac
+
+name="cx-${mode:0:3}-$(date +%H%M%S)"
+outdir="${TMPDIR:-/tmp}/herdr-codex"; mkdir -p "$outdir"
+out="$outdir/$name.md"; rm -f "$out"
+
+# Stop with exit 3 when Codex shows its hook-approval screen (a prompt sent into it is lost).
+hook_gate() {
+  local screen
+  screen=$(herdr agent read "$name" --source visible --lines 80 2>/dev/null || true)
+  case "$screen" in *"need review before they can run"*|*"needs review before it can run"*)
+    echo "herdr-codex: Codex in pane $pane is waiting for hook approval. Review the hooks there ('t' trusts all," >&2
+    echo "  enter reviews one) or run /hooks, then rerun this command; or rerun with --trust-hooks to skip trust" >&2
+    echo "  for that launch only. The pane stays open." >&2
+    exit 3 ;;
+  esac
+}
+
+# Reuse an idle Codex in this tab with the same cwd before opening another pane.
+pane=""; reused=0
+if [ "$fresh" -eq 0 ]; then
+  rdir=$(cd "$dir" && pwd -P)
+  # A rescue needs a write-capable pane, so it reuses only an earlier rescue (cx-res-*); a review prefers a
+  # read-only reviewer (cx-rev-*/cx-adv-*) and otherwise takes any idle Codex, told in words to stay read-only.
+  pane=$(herdr agent list 2>/dev/null | jq -r --arg me "${HERDR_PANE_ID:-}" --arg dir "$rdir" --arg dir2 "$dir" --arg mode "$mode" '
+    .result.agents as $a
+    | ($a[] | select(.pane_id == $me) | .tab_id) as $tab
+    | [$a[] | select(.pane_id != $me and .agent == "codex" and .tab_id == $tab
+                     and (.agent_status == "idle" or .agent_status == "done")
+                     and (.cwd == $dir or .cwd == $dir2))
+            | . + {ro: ((.name // "") | test("^cx-(rev|adv)-")), rw: ((.name // "") | test("^cx-res-"))}]
+    | if $mode == "rescue" then map(select(.rw)) else (map(select(.ro)) + map(select(.ro | not))) end
+    | .[0].pane_id // empty')
+  if [ -n "$pane" ]; then
+    reused=1; name=$pane
+  fi
+fi
+if [ "$reused" -eq 0 ]; then
+  # Split wide panes right, narrow ones down.
+  cols=$(herdr pane layout --pane "$HERDR_PANE_ID" 2>/dev/null | jq -r '.. | objects | select(.pane_id? == env.HERDR_PANE_ID) | .cols? // .width? // empty' | head -1)
+  dirn=right; [ -n "$cols" ] && [ "$cols" -lt 160 ] && dirn=down
+  pane=$(herdr pane split --current --direction "$dirn" --cwd "$dir" --no-focus | jq -r '.result.pane.pane_id')
+  [ "$trusthooks" -eq 1 ] && args+=(--dangerously-bypass-hook-trust)
+  herdr agent start "$name" --kind codex --pane "$pane" --timeout 60000 -- "${args[@]}" >/dev/null
+  # Codex opens on its hook-approval screen when a project hook is new or changed. A prompt sent now lands in
+  # that screen and the wait "settles" at once, so stop here instead of reporting an empty result.
+  # The screen can appear a moment after the agent reports ready: watch for it for a few seconds.
+  for _ in 1 2 3 4 5 6; do
+    hook_gate
+    sleep 1
+  done
+fi
+
+msg="$(cat "$prompts/$pfile")"
+[ -n "$base" ] && msg="$msg
+Base ref: $base"
+if [ -n "$extra" ]; then
+  label=Focus; [ "$mode" = rescue ] && label=Task
+  msg="$msg
+$label: $extra"
+fi
+# A reused pane may be write-capable: say the review is read-only in words.
+if [ "$reused" -eq 1 ] && [ "$mode" != rescue ]; then
+  msg="$msg
+This is a READ-ONLY $mode: do not edit, create or delete any file; report findings only."
+fi
+# Read-only sandboxes can't write the result file, so reviews reply in the pane (read back
+# below); rescue writes its report to a file.
+if [ "$mode" = rescue ]; then
+  msg="$msg
+When done or stuck, write your final report as Markdown to $out, then reply with one line: done. End the report with your Codex session id if you can see it."
+else
+  msg="$msg
+End your reply with your Codex session id if you can see it."
+fi
+
+if [ "$reused" -eq 1 ]; then
+  hint="pass --new for a fresh read-only pane"; [ "$mode" = rescue ] && hint="pass --new for a fresh pane"
+  echo "herdr-codex: reusing Codex in pane $pane ($mode); $hint" >&2
+else
+  echo "herdr-codex: agent $name in pane $pane ($mode)" >&2
+fi
+herdr agent prompt "$name" "$msg" --wait --timeout "$timeout" >/dev/null || {
+  echo "herdr-codex: wait ended without settling; inspect with: herdr agent read $name --source recent-unwrapped --lines 200" >&2
+  exit 1
+}
+
+hook_gate   # the screen can also appear after the prompt was sent; then the "result" is that screen
+if [ ! -s "$out" ]; then
+  herdr agent read "$name" --source recent-unwrapped --lines 400 > "$out"
+fi
+echo "result: $out"
+cat "$out"

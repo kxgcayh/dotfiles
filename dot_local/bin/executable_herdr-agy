@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# herdr-agy: run agy (Antigravity CLI) as a worker in a visible Herdr pane beside the caller.
+#   herdr-agy run  [--dir DIR] [--out DIR] [--timeout SEC] [--no-wait] <task text...>   new pane
+#   herdr-agy send <PANE> [--out DIR] [--timeout SEC] [--no-wait] <task text...>        follow-up in an agy pane
+# The task goes to a file, so quoting never matters; agy is told to read it. agy writes
+# <job>/result.md and then <job>/done; the wrapper waits for that file (not screen text),
+# then prints the result. The pane stays open for follow-ups; close it with herdr pane close.
+# Task text "-" reads the task from stdin. Default --out: $HERDR_AGY_OUT or $TMPDIR/herdr-agy.
+set -euo pipefail
+
+usage() { sed -n '2,8p' "$0" | sed 's/^# \{0,1\}//'; exit 2; }
+case ${1:-} in ""|-h|--help) usage ;; esac
+[ "${HERDR_ENV:-}" = 1 ] || { echo "herdr-agy: not inside a Herdr pane (HERDR_ENV!=1)" >&2; exit 1; }
+
+mode=$1; shift
+pane=""
+if [ "$mode" = send ]; then
+  [ $# -gt 0 ] || usage
+  pane=$1; shift
+elif [ "$mode" != run ]; then
+  usage
+fi
+
+dir="$PWD"; outroot="${HERDR_AGY_OUT:-${TMPDIR:-/tmp}/herdr-agy}"; timeout=1800; wait=1
+while [ $# -gt 0 ]; do
+  case $1 in
+    --dir) dir=$2; shift 2 ;;
+    --out) outroot=$2; shift 2 ;;
+    --timeout) timeout=$2; shift 2 ;;
+    --no-wait) wait=0; shift ;;
+    -h|--help) usage ;;
+    --) shift; break ;;
+    *) break ;;
+  esac
+done
+if [ "${1:-}" = - ] && [ $# -eq 1 ]; then task=$(cat); else task="$*"; fi
+[ -n "$task" ] || { echo "herdr-agy: task text required" >&2; exit 2; }
+
+job="$outroot/agy-$(date +%Y%m%d-%H%M%S)-$$"
+mkdir -p "$job"
+taskf="$job/task.md"; out="$job/result.md"; done_f="$job/done"
+cat > "$taskf" <<EOF
+$task
+
+---
+Reporting (required): when finished or stuck, write your final report as Markdown to
+$out
+then create the empty file
+$done_f
+(create it last, after result.md is complete). If stuck, say what blocked you in result.md.
+EOF
+
+line="Read the task file $taskf and do what it says."
+
+if [ "$mode" = run ]; then
+  # Split wide panes right, narrow ones down (same rule as herdr-codex).
+  cols=$(herdr pane layout --pane "$HERDR_PANE_ID" 2>/dev/null | jq -r '.. | objects | select(.pane_id? == env.HERDR_PANE_ID) | .cols? // .width? // empty' | head -1)
+  dirn=right; [ -n "$cols" ] && [ "$cols" -lt 160 ] && dirn=down
+  pane=$(herdr pane split --current --direction "$dirn" --cwd "$dir" --no-focus | jq -r '.result.pane.pane_id')
+  # The pane runs a shell; the launch line holds no user text, so nothing needs quoting.
+  # agy rejects a bare positional prompt, hence -i.
+  herdr pane run "$pane" "agy --dangerously-skip-permissions -i \"$line\"" >/dev/null
+else
+  # agent prompt / pane run do not submit into agy's input box; literal text + Enter does.
+  herdr pane send-text "$pane" "$line" >/dev/null
+  sleep 0.3
+  herdr pane send-keys "$pane" Enter >/dev/null
+fi
+
+echo "herdr-agy: pane $pane, job $job" >&2
+[ "$wait" = 1 ] || { echo "result: $out (pending; done when $done_f exists)"; exit 0; }
+
+deadline=$(( $(date +%s) + timeout ))
+while [ ! -e "$done_f" ]; do
+  if [ "$(date +%s)" -ge "$deadline" ]; then
+    echo "herdr-agy: no done file after ${timeout}s; inspect with: herdr pane read $pane" >&2
+    exit 1
+  fi
+  sleep 3
+done
+echo "result: $out"
+cat "$out"
