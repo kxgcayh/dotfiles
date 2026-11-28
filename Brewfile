@@ -42,8 +42,6 @@ brew "fvm"
 brew "cocoapods"
 
 cask "ghostty"
-cask "claude-code@latest"
-cask "chatgpt"
 
 # Editors
 cask "sublime-text"

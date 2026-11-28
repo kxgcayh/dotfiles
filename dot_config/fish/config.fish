@@ -16,7 +16,6 @@ alias la "ls -A"
 alias ll "ls -l"
 alias lla "ll -A"
 alias g git
-alias claude-yolo "claude --dangerously-skip-permissions"
 alias pn pnpm
 alias cz chezmoi
 command -qv nvim && alias vim nvim
