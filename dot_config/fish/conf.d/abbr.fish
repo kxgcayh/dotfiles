@@ -1,4 +1,4 @@
-# Abbreviations ported from oh-my-zsh plugins (flutter, npm, opencode, vscode).
+# Abbreviations ported from oh-my-zsh plugins (flutter, npm, vscode).
 # Git shortcuts come from the jhillyerd/plugin-git fisher plugin.
 status is-interactive; or return
 
@@ -41,11 +41,6 @@ abbr -a npmi npm info
 abbr -a npmSe npm search
 abbr -a npmrd npm run dev
 abbr -a npmrb npm run build
-
-# opencode
-abbr -a opc opencode
-abbr -a opcc opencode --continue
-abbr -a opcr opencode run
 
 # vscode
 abbr -a vsc code .

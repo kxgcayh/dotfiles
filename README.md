@@ -11,7 +11,7 @@ Forked from [craftzdog/dotfiles](https://github.com/craftzdog/dotfiles) by Takuy
 - **Vesper theme everywhere**: Ghostty (`Vesper`, background blur kept), Neovim ([vesper.nvim](https://github.com/datsfilipe/vesper.nvim), transparent), and herdr (`vesper`). The custom Neovim tabline uses the Vesper palette instead of Solarized Osaka.
 - **oh-my-zsh style shortcuts in fish**:
   - [plugin-git](https://github.com/jhillyerd/plugin-git) for the oh-my-zsh git aliases (`gst`, `gco`, `gcm`, …)
-  - `conf.d/abbr.fish`: abbreviations ported from the oh-my-zsh flutter, npm, opencode and vscode plugins (`flr`, `flget`, `npmrd`, `opc`, `vsc`, …)
+  - `conf.d/abbr.fish`: abbreviations ported from the oh-my-zsh flutter, npm and vscode plugins (`flr`, `flget`, `npmrd`, `vsc`, …)
 - **Neovim tweaks**:
   - `;f` uses the snacks `smart` picker with frecency (buffers, recent and project files, like VS Code's Cmd+P); `;F` is the plain file finder
   - Up/Down select items in the cmdline completion menu; Option+Left/Right move by word in insert mode
@@ -51,7 +51,7 @@ Managed with [chezmoi](https://www.chezmoi.io/).
 - [herdr](https://herdr.dev/) config (terminal workspace manager for AI agents)
 - Ghostty config
 - git, lazygit and gh config
-- Zed and opencode config
+- Zed config
 - fish config
 - PowerShell config
 - Homebrew, apt, Scoop and winget package lists
