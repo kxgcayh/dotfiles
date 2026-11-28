@@ -51,7 +51,8 @@ Managed with [chezmoi](https://www.chezmoi.io/).
 - [herdr](https://herdr.dev/) config (terminal workspace manager for AI agents)
 - tmux config
 - Ghostty config
-- git and lazygit config
+- git, lazygit and gh config
+- Zed and opencode config
 - fish config
 - PowerShell config
 - Homebrew, apt, Scoop and winget package lists

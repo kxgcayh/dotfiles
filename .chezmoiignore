@@ -73,3 +73,6 @@ install-npm-packages.sh
 scripts/
 .zshrc.local
 .config/devault/config.json
+
+# gh auth tokens
+.config/gh/hosts.yml
