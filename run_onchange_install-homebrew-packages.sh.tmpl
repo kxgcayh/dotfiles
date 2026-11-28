@@ -18,8 +18,10 @@ for candidate in /opt/homebrew/bin/brew /usr/local/bin/brew; do
 	fi
 done
 
-brew bundle --file="{{ $brewfile }}"
+# --verbose shows download progress, so a slow cask upgrade does not look like a hang.
+export HOMEBREW_CURL_RETRIES="${HOMEBREW_CURL_RETRIES:-3}"
+brew bundle --verbose --file="{{ $brewfile }}"
 {{- if $windowsCrossBuild }}
-brew bundle --file="{{ joinPath .chezmoi.sourceDir "Brewfile.windows-cross" }}"
+brew bundle --verbose --file="{{ joinPath .chezmoi.sourceDir "Brewfile.windows-cross" }}"
 {{- end }}
 {{- end -}}
