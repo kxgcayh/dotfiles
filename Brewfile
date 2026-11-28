@@ -1,7 +1,7 @@
-tap "oven-sh/bun"
-tap "lightpanda-io/browser"
-tap "d-kuro/tap"
-tap "heroku/brew"
+tap "oven-sh/bun", trusted: true
+tap "lightpanda-io/browser", trusted: true
+tap "d-kuro/tap", trusted: true
+tap "heroku/brew", trusted: true
 
 brew "fish"
 brew "tmux"
