@@ -49,7 +49,6 @@ Managed with [chezmoi](https://www.chezmoi.io/).
 
 - Neovim config
 - [herdr](https://herdr.dev/) config (terminal workspace manager for AI agents)
-- tmux config
 - Ghostty config
 - git, lazygit and gh config
 - Zed and opencode config
