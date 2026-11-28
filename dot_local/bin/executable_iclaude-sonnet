@@ -1,3 +1,0 @@
-#!/bin/zsh
-# iclaude with Sonnet, for Herdr task workers: herdr-task start <ID> --argv '["iclaude-sonnet"]'
-python3 -I "$HOME/.claude-personal/sync-mcp.py" && CLAUDE_CONFIG_DIR="$HOME/.claude-personal" exec claude --model sonnet --settings '{"fastMode":false}' --permission-mode auto "$@"

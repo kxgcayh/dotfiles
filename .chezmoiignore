@@ -52,11 +52,6 @@ Session.vim
 .config/powershell
 {{- end }}
 
-# launchd agents (macOS only)
-{{- if ne .chezmoi.os "darwin" }}
-Library
-{{- end }}
-
 # npm install script (Unix only)
 {{- if eq .chezmoi.os "windows" }}
 install-npm-packages.sh
@@ -65,7 +60,6 @@ install-npm-packages.sh
 # Repository tooling and machine-local configuration
 scripts/
 .zshrc.local
-.config/devault/config.json
 
 # gh auth tokens
 .config/gh/hosts.yml
